@@ -4,22 +4,23 @@
  */
 
 L.Projection.Mercator = {
+
 	MAX_LATITUDE: 85.0840591556,
 
 	R_MINOR: 6356752.314245179,
 	R_MAJOR: 6378137,
 
-	bounds: L.bounds([-20037508.34279, -15496570.73972], [20037508.34279, 18764656.23138]),
+	bounds: L.bounds(
+		[-20037508.34279, -15496570.73972],
+		[20037508.34279, 18764656.23138]),
 
 	project: function (latlng) {
 		var d = L.LatLng.DEG_TO_RAD,
 		    max = this.MAX_LATITUDE,
-		    lat = Math.max(Math.min(max, latlng.lat), -max),
 		    r = this.R_MAJOR,
-		    r2 = this.R_MINOR,
 		    x = latlng.lng * d * r,
-		    y = lat * d,
-		    tmp = r2 / r,
+		    y = Math.max(Math.min(max, latlng.lat), -max) * d,
+		    tmp = this.R_MINOR / r,
 		    eccent = Math.sqrt(1.0 - tmp * tmp),
 		    con = eccent * Math.sin(y);
 
@@ -34,9 +35,8 @@ L.Projection.Mercator = {
 	unproject: function (point) {
 		var d = L.LatLng.RAD_TO_DEG,
 		    r = this.R_MAJOR,
-		    r2 = this.R_MINOR,
 		    lng = point.x * d / r,
-		    tmp = r2 / r,
+		    tmp = this.R_MINOR / r,
 		    eccent = Math.sqrt(1 - (tmp * tmp)),
 		    ts = Math.exp(- point.y / r),
 		    phi = (Math.PI / 2) - 2 * Math.atan(ts),
