@@ -15,7 +15,7 @@ L.CRS.EPSG3857 = L.extend({}, L.CRS, {
 		return projectedPoint.multiplyBy(earthRadius);
 	},
 
-	wrapLng: true
+	wrapLng: [-180, 180]
 });
 
 L.CRS.EPSG900913 = L.extend({}, L.CRS.EPSG3857, {
